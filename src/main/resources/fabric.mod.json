@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "elementalist",
+  "version": "${version}",
+  "name": "Elementalist",
+  "description": "Embrace the elements server side",
+  "authors": [
+    "QPCrummer"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/elementalist/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "main": [
+      "com.github.qpcrummer.elementalist.Elementalist"
+    ]
+  },
+  "mixins": [
+    "elementalist.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.10",
+    "fabric": "*",
+    "minecraft": "1.19.2"
+  }
+}
