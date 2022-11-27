@@ -23,7 +23,21 @@ public final class ParticleUtils {
     }
 
     /**
-     * Spawns the given number of particles at random distances from the given position within a sphere
+     * Spawns the given number of particles at random positions inside a cube
+     * @param world the world
+     * @param particle the particle
+     * @param start the center position
+     * @param deltaPos the maximum distance on each axis from the center position
+     * @param count the number of particles
+     * @param motion the maximum particle motion
+     */
+    public static void insideCube(final ServerWorld world, final ParticleEffect particle, final Vec3d start,
+                                 final double deltaPos, final int count, final double motion) {
+        world.spawnParticles(particle, start.getX(), start.getY(), start.getZ(), count, deltaPos, deltaPos, deltaPos, motion);
+    }
+
+    /**
+     * Spawns the given number of particles at random positions inside a sphere
      * @param world the world
      * @param particle the particle
      * @param center the center of the sphere
