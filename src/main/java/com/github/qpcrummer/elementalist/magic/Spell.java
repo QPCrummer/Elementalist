@@ -1,5 +1,9 @@
 package com.github.qpcrummer.elementalist.magic;
 
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
@@ -17,17 +21,12 @@ public class Spell {
         this.world = world;
     }
 
-    public void castProjectile(float roll, float speed, float divergence) {
-        setVelocity(roll, speed, divergence);
+    public void castProjectile() {
         spawnCastingParticles();
     }
 
     public int getCooldown() {
         return cooldown;
-    }
-
-    public void setVelocity(float roll, float speed, float divergence) {
-
     }
 
     public String getName() {
@@ -83,5 +82,17 @@ public class Spell {
      */
     public void spawnEntityImpactParticle(final EntityHitResult result) {
         // nothing
+    }
+
+    /**
+     * Called when summoning the tracker entity
+     */
+    public void spawnTrackerEntity() {
+        ArrowEntity entity = (ArrowEntity) EntityType.ARROW.spawnFromItemStack(player.getWorld(), ItemStack.EMPTY, player, player.getBlockPos().up(), SpawnReason.NATURAL, true, false);
+        assert entity != null;
+        //entity.setInvisible(true);
+        entity.setPosition(player.getX(), player.getEyeY(), player.getZ());
+        entity.setNoGravity(true);
+        entity.setVelocity(player, player.getPitch(), player.getYaw(), 0.0f, 0.5f, 1.0f);
     }
 }

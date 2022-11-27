@@ -30,7 +30,8 @@ public class Tome extends ModelledPolymerItem {
             if (spell == null) {
                 spell = ((SpellAccessor)user).getSpells().get(currentSpell);
             }
-            spell.castProjectile(0.0f, 0.5f, 1.0f);
+            spell.castProjectile();
+            spell.spawnTrackerEntity();
             ((SpellAccessor)user).resetCooldowns(currentSpell);
             user.getItemCooldownManager().set(this, spell.getCooldown());
         }

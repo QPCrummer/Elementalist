@@ -68,7 +68,7 @@ public class CreateSpellArray {
     }
     public static void levelUp(int level, ServerPlayerEntity player, World world, String element) {
         ((SpellAccessor)player).setLevel(level);
-        ((SpellAccessor)player).getSpells().add(elementSpells(element, player, world).get(level));
+        ((SpellAccessor)player).getSpells().add(elementSpells(element, player, world).get(level - 1));
         player.sendMessage(Text.literal("Congratulations, you are now a level "+level+ " " + element + " elementalist!"));
     }
 }

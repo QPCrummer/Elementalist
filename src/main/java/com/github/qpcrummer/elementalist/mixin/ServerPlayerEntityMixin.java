@@ -7,8 +7,6 @@ import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.encryption.PlayerPublicKey;
-import net.minecraft.network.packet.s2c.play.OverlayMessageS2CPacket;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
@@ -23,6 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static com.github.qpcrummer.elementalist.tome.Tome.currentSpell;
 import static com.github.qpcrummer.elementalist.tome.Tome.spell;
 import static com.github.qpcrummer.elementalist.util.CreateSpellArray.elementSpells;
 
@@ -30,11 +29,9 @@ import static com.github.qpcrummer.elementalist.util.CreateSpellArray.elementSpe
 public abstract class ServerPlayerEntityMixin extends PlayerEntity implements SpellAccessor {
 
     @Shadow public abstract void sendMessage(Text message);
-
-    @Shadow public ServerPlayNetworkHandler networkHandler;
     private static final ArrayList<Spell> spells = new ArrayList<>();
     private static String element = "";
-    private static int level;
+    private static int level = 0;
     private static int cooldown1;
     private static int cooldown2;
     private static int cooldown3;
@@ -88,40 +85,48 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Sp
 
     @Inject(method = "readCustomDataFromNbt", at = @At("HEAD"))
     public void readCustomData(NbtCompound nbt, CallbackInfo ci) {
+        System.out.println(nbt.get("elemental_level"));
+        System.out.println(nbt.get("element"));
+        System.out.println(nbt.contains("elemental_level"));
+        System.out.println(nbt.contains("element"));
         if (nbt.getInt("elemental_level") != 0 && !Objects.equals(nbt.getString("element"), "")) {
             level = nbt.getInt("elemental_level");
             element = nbt.getString("element");
             level2Spells(level, element);
-        } else {
-            firstJoin();
         }
     }
 
     @Inject(method = "writeCustomDataToNbt", at = @At("HEAD"))
     public void writeCustomData(NbtCompound nbt, CallbackInfo ci) {
+        System.out.println(level);
+        System.out.println(element);
         nbt.putInt("elemental_level", level);
         nbt.putString("element", element);
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
     public void tick(CallbackInfo ci) {
-        if (this.isHolding(Items.tome) && spell != null) {
-            OverlayMessageS2CPacket msg;
+        if (spell != null) {
             if (cooldown1 != 0) {
                 cooldown1--;
-                msg = new OverlayMessageS2CPacket(Text.literal(spell.getName() + " | " + cooldown1));
-                this.networkHandler.sendPacket(msg);
-            } else if (cooldown2 != 0) {
+                if (this.isHolding(Items.tome) && currentSpell == 0) {
+                    this.sendMessage(Text.literal(spell.getName() + " | " + cooldown1), true);
+                }
+            }
+            if (cooldown2 != 0) {
                 cooldown2--;
-                msg = new OverlayMessageS2CPacket(Text.literal(spell.getName() + " | " + cooldown2));
-                this.networkHandler.sendPacket(msg);
-            } else if (cooldown3 != 0) {
+                if (this.isHolding(Items.tome) && currentSpell == 1) {
+                    this.sendMessage(Text.literal(spell.getName() + " | " + cooldown2), true);
+                }
+            }
+            if (cooldown3 != 0) {
                 cooldown3--;
-                msg = new OverlayMessageS2CPacket(Text.literal(spell.getName() + " | " + cooldown3));
-                this.networkHandler.sendPacket(msg);
-            } else {
-                msg = new OverlayMessageS2CPacket(Text.literal(spell.getName()));
-                this.networkHandler.sendPacket(msg);
+                if (this.isHolding(Items.tome) && currentSpell == 2) {
+                    this.sendMessage(Text.literal(spell.getName() + " | " + cooldown3), true);
+                }
+            }
+            if (this.isHolding(Items.tome) && cooldown1 + cooldown2 + cooldown3 == 0) {
+                this.sendMessage(Text.literal(spell.getName()), true);
             }
         }
     }

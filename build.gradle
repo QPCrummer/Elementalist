@@ -20,7 +20,7 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     modImplementation include("eu.pb4:polymer:0.2.18+1.19.2")
-    modImplementation include("eu.pb4:polymer-autohost:0.1.4+1.19.2")
+    //modImplementation include("eu.pb4:polymer-autohost:0.1.4+1.19.2")
     modImplementation include("fr.catcore:server-translations-api:1.4.18+1.19.2")
     modImplementation include("eu.pb4:sgui:1.1.5+1.19.1")
     modImplementation("maven.modrinth:lazydfu:0.1.3")
