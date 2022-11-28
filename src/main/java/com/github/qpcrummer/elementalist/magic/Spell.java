@@ -1,10 +1,13 @@
 package com.github.qpcrummer.elementalist.magic;
 
+import com.github.qpcrummer.elementalist.tome.Tome;
+import com.github.qpcrummer.elementalist.util.TargetEntityAccessor;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
@@ -15,6 +18,8 @@ public class Spell {
     protected final World world;
     protected int cooldown;
     protected final String name = "";
+    protected int distance;
+    protected boolean noclip = false;
 
     public Spell(ServerPlayerEntity player, World world) {
         this.player = player;
@@ -31,6 +36,14 @@ public class Spell {
 
     public String getName() {
         return name;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public boolean noClip(boolean noclip) {
+        return this.noclip = noclip;
     }
 
     /**
@@ -90,8 +103,13 @@ public class Spell {
     public void spawnTrackerEntity() {
         ArrowEntity entity = (ArrowEntity) EntityType.ARROW.spawnFromItemStack(player.getWorld(), ItemStack.EMPTY, player, player.getBlockPos().up(), SpawnReason.NATURAL, true, false);
         assert entity != null;
+        ((TargetEntityAccessor)entity).setSpell(Tome.spell);
         //entity.setInvisible(true);
-        entity.setPosition(player.getX(), player.getEyeY(), player.getZ());
+        entity.setNoClip(noclip);
+        entity.setOwner(player);
+        entity.setCustomName(Text.literal("Target"));
+        entity.setPosition(player.getX(), player.getEyeY() - 0.25, player.getZ());
+        ((TargetEntityAccessor)entity).setStartPos(entity.getPos());
         entity.setNoGravity(true);
         entity.setVelocity(player, player.getPitch(), player.getYaw(), 0.0f, 0.5f, 1.0f);
     }

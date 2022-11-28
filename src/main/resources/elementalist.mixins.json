@@ -4,7 +4,7 @@
   "package": "com.github.qpcrummer.elementalist.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "EntityMixin",
+    "PersistentProjectileMixin",
     "ServerPlayerEntityMixin"
   ],
   "client": [

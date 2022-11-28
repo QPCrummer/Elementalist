@@ -25,6 +25,11 @@ public class DivineRetribution extends Spell {
     }
 
     @Override
+    public int getDistance() {
+        return 100;
+    }
+
+    @Override
     public void spawnCastingParticles() {
         Vec3d center = new Vec3d(player.getX(), player.getBodyY(0.67D), player.getZ());
         ParticleUtils.insideSphere(player.getWorld(), ParticleTypes.SOUL_FIRE_FLAME, center, 0.25D, 20, 0);

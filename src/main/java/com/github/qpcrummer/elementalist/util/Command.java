@@ -26,8 +26,7 @@ public class Command {
                         public boolean onClick(int index, ClickType type, SlotActionType action, GuiElementInterface element) {
                             String elementAsString = element.getItemStack().getName().getString();
                             ((SpellAccessor)player).setElement(elementAsString);
-                            ((SpellAccessor)player).setLevel(1);
-                            levelUp(1, player, player.getEntityWorld(), elementAsString);
+                            levelUp(player, player.getEntityWorld(), elementAsString);
                             gui.close();
                             return super.onClick(index, type, action, element);
                         }
@@ -38,6 +37,14 @@ public class Command {
                     }
                     gui.open();
                     return 1;
-                })));
+                })
+                .then(CommandManager.literal("levelup")
+                        .executes(context -> {
+                            ServerPlayerEntity player = context.getSource().getPlayer();
+                            assert player != null;
+                            String elementAsString = ((SpellAccessor)player).getElement();
+                            levelUp(player, player.getEntityWorld(), elementAsString);
+                            return 1;
+                        }))));
     }
 }

@@ -1,6 +1,7 @@
 package com.github.qpcrummer.elementalist.util;
 
 import com.github.qpcrummer.elementalist.magic.Spell;
+import net.minecraft.util.hit.EntityHitResult;
 
 import java.util.ArrayList;
 

@@ -25,6 +25,11 @@ public class PiercingJudgement extends Spell {
     }
 
     @Override
+    public int getDistance() {
+        return 10;
+    }
+
+    @Override
     public void spawnCastingParticles() {
         Vec3d center = new Vec3d(player.getX(), player.getBodyY(0.67D), player.getZ());
         ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.SOUL_FIRE_FLAME, center, 10, 0.02D);
