@@ -50,11 +50,14 @@ public abstract class PersistentProjectileMixin extends ProjectileEntity impleme
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void tick(CallbackInfo ci) {
-        if (Objects.equals(this.getCustomName(), Text.literal("Target")) && start.distanceTo(this.getPos()) >= spell.getDistance()) {
-            BlockHitResult bhr = new BlockHitResult(this.getPos(), Direction.NORTH, this.getBlockPos(), true);
-            spell.onHitBlock(bhr);
-            this.discard();
-            ci.cancel();
+        if (Objects.equals(this.getCustomName(), Text.literal("Target")) && spell != null) {
+            spell.tick();
+            if ( start.distanceTo(this.getPos()) >= spell.getDistance()) {
+                BlockHitResult bhr = new BlockHitResult(this.getPos(), Direction.NORTH, this.getBlockPos(), true);
+                spell.onHitBlock(bhr);
+                this.discard();
+                ci.cancel();
+            }
         }
     }
 

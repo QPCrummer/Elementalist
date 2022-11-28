@@ -42,6 +42,13 @@ public class Spell {
         return distance;
     }
 
+    /**
+     * Called every tick a spell has been cast
+     */
+    public void tick() {
+
+    }
+
     public boolean noClip(boolean noclip) {
         return this.noclip = noclip;
     }
