@@ -12,30 +12,14 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
 import static com.github.qpcrummer.elementalist.util.CreateSpellArray.levelUp;
+import static com.github.qpcrummer.elementalist.util.GUI.launchGUI;
 
 public class Command {
-
-    public static SimpleGui gui;
-
     public static void registerCommand() {
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, environment) -> dispatcher.register(CommandManager.literal("element")
                 .executes(context -> {
                     ServerPlayerEntity player = context.getSource().getPlayer();
-                    gui = new SimpleGui(ScreenHandlerType.GENERIC_9X3, player, false) {
-                        @Override
-                        public boolean onClick(int index, ClickType type, SlotActionType action, GuiElementInterface element) {
-                            String elementAsString = element.getItemStack().getName().getString();
-                            ((SpellAccessor)player).setElement(elementAsString);
-                            levelUp(player, player.getEntityWorld(), elementAsString);
-                            gui.close();
-                            return super.onClick(index, type, action, element);
-                        }
-                    };
-                    gui.setTitle(Text.literal("Choose Your Element"));
-                    for (int i = 0; i < CreateSpellArray.elements.size(); i++) {
-                        gui.setSlot(i, new GuiElementBuilder(CreateSpellArray.icons.get(i)).setCount(1).setName(Text.literal(CreateSpellArray.elements.get(i))));
-                    }
-                    gui.open();
+                    launchGUI(player);
                     return 1;
                 })
                 .then(CommandManager.literal("levelup")
@@ -44,6 +28,17 @@ public class Command {
                             assert player != null;
                             String elementAsString = ((SpellAccessor)player).getElement();
                             levelUp(player, player.getEntityWorld(), elementAsString);
+                            return 1;
+                        }))
+                .then(CommandManager.literal("reset")
+                        .executes(context -> {
+                            ServerPlayerEntity player = context.getSource().getPlayer();
+                            assert player != null;
+                            ((SpellAccessor)player).setLevel(0);
+                            ((SpellAccessor)player).setElement("");
+                            ((SpellAccessor)player).getSpells().clear();
+                            player.sendMessage(Text.literal("Your elemental status has been wiped"));
+                            launchGUI(player);
                             return 1;
                         }))));
     }
