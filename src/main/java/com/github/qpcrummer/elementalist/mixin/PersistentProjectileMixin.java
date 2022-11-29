@@ -51,7 +51,7 @@ public abstract class PersistentProjectileMixin extends ProjectileEntity impleme
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void tick(CallbackInfo ci) {
         if (Objects.equals(this.getCustomName(), Text.literal("Target")) && spell != null) {
-            spell.tick();
+            spell.tick((PersistentProjectileEntity) (Object) this);
             if ( start.distanceTo(this.getPos()) >= spell.getDistance()) {
                 BlockHitResult bhr = new BlockHitResult(this.getPos(), Direction.NORTH, this.getBlockPos(), true);
                 spell.onHitBlock(bhr);
@@ -63,7 +63,7 @@ public abstract class PersistentProjectileMixin extends ProjectileEntity impleme
 
     @Inject(method = "onEntityHit", at = @At("HEAD"), cancellable = true)
     private void onEntityHit(EntityHitResult entityHitResult, CallbackInfo ci) {
-        if (Objects.equals(this.getCustomName(), Text.literal("Target"))) {
+        if (Objects.equals(this.getCustomName(), Text.literal("Target")) && spell != null) {
             spell.onHitEntity(entityHitResult);
             this.discard();
             ci.cancel();
@@ -72,7 +72,7 @@ public abstract class PersistentProjectileMixin extends ProjectileEntity impleme
 
     @Inject(method = "onBlockHit", at = @At("HEAD"), cancellable = true)
     private void onBlockHit(BlockHitResult blockHitResult, CallbackInfo ci) {
-        if (Objects.equals(this.getCustomName(), Text.literal("Target"))) {
+        if (Objects.equals(this.getCustomName(), Text.literal("Target")) && spell != null) {
             spell.onHitBlock(blockHitResult);
             this.discard();
             ci.cancel();

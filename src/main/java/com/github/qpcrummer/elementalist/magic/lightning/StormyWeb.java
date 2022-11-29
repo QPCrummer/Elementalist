@@ -2,7 +2,7 @@ package com.github.qpcrummer.elementalist.magic.lightning;
 
 import com.github.qpcrummer.elementalist.magic.Spell;
 import com.github.qpcrummer.elementalist.util.ParticleUtils;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Vec3d;
@@ -30,15 +30,15 @@ public class StormyWeb extends Spell {
     }
 
     @Override
-    public void spawnCastingParticles() {
+    public void spawnCastingParticles(Vec3d position) {
         Vec3d center = new Vec3d(player.getX(), player.getBodyY(0.67D), player.getZ());
         ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.SOUL_FIRE_FLAME, center, 10, 0.02D);
         ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.ELECTRIC_SPARK, center, 20, 0.12D);
     }
 
     @Override
-    public void spawnTrailParticle(Vec3d position) {
-        ParticleUtils.insideDisc(player.getWorld(), ParticleTypes.SOUL_FIRE_FLAME, position, 4.0D, 10, 0);
-        ParticleUtils.insideDisc(player.getWorld(), ParticleTypes.ELECTRIC_SPARK, position, 4.0D, 25, 0);
+    public void spawnTrailParticle(PersistentProjectileEntity entity) {
+        ParticleUtils.insideDisc(player.getWorld(), ParticleTypes.SOUL_FIRE_FLAME, entity.getPos(), 4.0D, 10, 0);
+        ParticleUtils.insideDisc(player.getWorld(), ParticleTypes.ELECTRIC_SPARK, entity.getPos(), 4.0D, 25, 0);
     }
 }

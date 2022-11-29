@@ -5,6 +5,7 @@ import com.github.qpcrummer.elementalist.util.ModelledPolymerItem;
 import com.github.qpcrummer.elementalist.util.SpellAccessor;
 import eu.pb4.polymer.api.resourcepack.PolymerModelData;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.*;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -30,8 +31,8 @@ public class Tome extends ModelledPolymerItem {
             if (spell == null) {
                 spell = ((SpellAccessor)user).getSpells().get(currentSpell);
             }
-            spell.castProjectile();
-            spell.spawnTrackerEntity();
+            PersistentProjectileEntity entity = spell.spawnTrackerEntity();
+            spell.castProjectile(entity.getPos());
             ((SpellAccessor)user).resetCooldowns(currentSpell);
             user.getItemCooldownManager().set(this, spell.getCooldown());
         }

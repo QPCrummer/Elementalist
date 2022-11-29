@@ -5,6 +5,7 @@ import com.github.qpcrummer.elementalist.util.TargetEntityAccessor;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -26,8 +27,8 @@ public class Spell {
         this.world = world;
     }
 
-    public void castProjectile() {
-        spawnCastingParticles();
+    public void castProjectile(Vec3d position) {
+        spawnCastingParticles(position);
     }
 
     public int getCooldown() {
@@ -45,8 +46,8 @@ public class Spell {
     /**
      * Called every tick a spell has been cast
      */
-    public void tick() {
-
+    public void tick(PersistentProjectileEntity entity) {
+        spawnTrailParticle(entity);
     }
 
     public boolean noClip(boolean noclip) {
@@ -75,16 +76,17 @@ public class Spell {
 
     /**
      * Called while the player is casting the spell
+     * @param position the casting position
      */
-    public void spawnCastingParticles() {
+    public void spawnCastingParticles(Vec3d position) {
         // nothing
     }
 
     /**
      * Called every tick to spawn particles at the spell position
-     * @param position the spell position
+     * @param targetEntity the target entity
      */
-    public void spawnTrailParticle(final Vec3d position) {
+    public void spawnTrailParticle(final PersistentProjectileEntity targetEntity) {
         // nothing
     }
 
@@ -107,7 +109,7 @@ public class Spell {
     /**
      * Called when summoning the tracker entity
      */
-    public void spawnTrackerEntity() {
+    public PersistentProjectileEntity spawnTrackerEntity() {
         ArrowEntity entity = (ArrowEntity) EntityType.ARROW.spawnFromItemStack(player.getWorld(), ItemStack.EMPTY, player, player.getBlockPos().up(), SpawnReason.NATURAL, true, false);
         assert entity != null;
         ((TargetEntityAccessor)entity).setSpell(Tome.spell);
@@ -119,5 +121,6 @@ public class Spell {
         ((TargetEntityAccessor)entity).setStartPos(entity.getPos());
         entity.setNoGravity(true);
         entity.setVelocity(player, player.getPitch(), player.getYaw(), 0.0f, 0.5f, 1.0f);
+        return entity;
     }
 }

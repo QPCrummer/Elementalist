@@ -2,6 +2,7 @@ package com.github.qpcrummer.elementalist.magic.blood;
 
 import com.github.qpcrummer.elementalist.magic.Spell;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
 
 public class BloodRain extends Spell {
@@ -22,5 +23,10 @@ public class BloodRain extends Spell {
     @Override
     public int getDistance() {
         return 15;
+    }
+
+    @Override
+    public void spawnEntityImpactParticle(EntityHitResult result) {
+        super.spawnEntityImpactParticle(result);
     }
 }
