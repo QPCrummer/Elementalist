@@ -6,28 +6,10 @@ import net.minecraft.world.World;
 
 public class TimeWarp extends Spell {
     public TimeWarp(ServerPlayerEntity player, World world) {
-        super(player, world);
+        super(player, world, "Time Warp", 600, 10);
+        noclip = true;
     }
 
     //This allows the player to noclip through walls for 5 seconds, while also freezing players in a 10X10 sphere for that period
 
-    @Override
-    public int getCooldown() {
-        return 600;
-    }
-
-    @Override
-    public String getName() {
-        return "Time Warp";
-    }
-
-    @Override
-    public int getDistance() {
-        return 10;
-    }
-
-    @Override
-    public boolean noClip(boolean noclip) {
-        return true;
-    }
 }

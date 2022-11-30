@@ -32,8 +32,8 @@ public class Tome extends ModelledPolymerItem {
                 spell = ((SpellAccessor)user).getSpells().get(currentSpell);
             }
             PersistentProjectileEntity entity = spell.spawnTrackerEntity();
-            spell.castProjectile(entity.getPos());
-            ((SpellAccessor)user).resetCooldowns(currentSpell);
+            spell.castProjectile(entity);
+            ((SpellAccessor)user).startCooldowns(currentSpell);
             user.getItemCooldownManager().set(this, spell.getCooldown());
         }
         return super.use(world, user, hand);

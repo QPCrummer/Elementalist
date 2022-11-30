@@ -23,7 +23,9 @@ public final class ParticleUtils {
     }
 
     /**
-     * Spawns the given number of particles at random positions inside a cube
+     * Spawns the given number of particles at random positions inside a cube.
+     * This is the fastest and least resource-intensive particle spawning method
+     * because it sends a single packet to the client for any number of particles.
      * @param world the world
      * @param particle the particle
      * @param start the center position
@@ -34,6 +36,29 @@ public final class ParticleUtils {
     public static void insideCube(final ServerWorld world, final ParticleEffect particle, final Vec3d start,
                                  final double deltaPos, final int count, final double motion) {
         world.spawnParticles(particle, start.getX(), start.getY(), start.getZ(), count, deltaPos, deltaPos, deltaPos, motion);
+    }
+
+    /**
+     * Spawns the given number of particles at random positions in a vertical column
+     * @param world the world
+     * @param particle the particle
+     * @param center the center position
+     * @param radius the horizontal radius of the column
+     * @param height the height of the column
+     * @param count the number of particles
+     * @param verticalMotion the particle vertial motion
+     */
+    public static void insideColumn(final ServerWorld world, final ParticleEffect particle, final Vec3d center, final double radius,
+                                    final double height, final int count, final double verticalMotion) {
+        double x, y, z;
+        double motionSig = Math.signum(verticalMotion);
+        double motionAbs = Math.abs(verticalMotion);
+        for(int i = 0; i < count; i++) {
+            x = center.getX() + (world.getRandom().nextDouble() - 0.5D) * 2.0D * radius;
+            y = center.getY() + world.getRandom().nextDouble() * height;
+            z = center.getZ() + (world.getRandom().nextDouble() - 0.5D) * 2.0D * radius;
+            world.spawnParticles(particle, x, y, z, 0, 0, motionSig, 0, motionAbs);
+        }
     }
 
     /**

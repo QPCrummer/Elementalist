@@ -17,29 +17,14 @@ import net.minecraft.world.World;
 public class DivineRetribution extends Spell {
 
     public DivineRetribution(ServerPlayerEntity player, World world) {
-        super(player, world);
+        super(player, world, "Divine Retribution", 800, 100);
+        speed = 0.85F;
     }
 
     @Override
-    public int getCooldown() {
-        return 800;
-    }
-
-    @Override
-    public String getName() {
-        return "Divine Retribution";
-    }
-
-    @Override
-    public int getDistance() {
-        return 100;
-    }
-
-    @Override
-    public void spawnCastingParticles(Vec3d position) {
-        Vec3d center = new Vec3d(player.getX(), player.getBodyY(0.67D), player.getZ());
-        ParticleUtils.insideSphere(player.getWorld(), ParticleTypes.SOUL_FIRE_FLAME, center, 0.25D, 20, 0);
-        ParticleUtils.insideSphere(player.getWorld(), ParticleTypes.ELECTRIC_SPARK, center, 1.0D, 40, 0);
+    public void spawnCastingParticles(PersistentProjectileEntity entity) {
+        ParticleUtils.insideSphere(player.getWorld(), ParticleTypes.SOUL_FIRE_FLAME, entity.getPos(), 0.25D, 20, 0);
+        ParticleUtils.insideSphere(player.getWorld(), ParticleTypes.ELECTRIC_SPARK, entity.getPos(), 1.0D, 40, 0);
     }
 
     @Override

@@ -11,15 +11,16 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class Spell {
     protected final ServerPlayerEntity player;
     protected final World world;
     protected int cooldown;
-    protected final String name = "";
+    protected String name = "";
     protected int distance;
+    protected float speed = 0.65F;
+    protected float divergence = 1.0F;
     protected boolean noclip = false;
 
     public Spell(ServerPlayerEntity player, World world) {
@@ -27,20 +28,53 @@ public class Spell {
         this.world = world;
     }
 
-    public void castProjectile(Vec3d position) {
-        spawnCastingParticles(position);
+    public Spell(ServerPlayerEntity player, World world, String name, int cooldown, int distance) {
+        this(player, world);
+        this.name = name;
+        this.cooldown = cooldown;
+        this.distance = distance;
     }
 
+    /**
+     * @param entity the spell target entity
+     */
+    public void castProjectile(PersistentProjectileEntity entity) {
+        spawnCastingParticles(entity);
+    }
+
+    /**
+     * @return the cooldown after using the spell
+     */
     public int getCooldown() {
         return cooldown;
     }
 
+    /**
+     * @return the display name of the spell
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @return the maximum travel distance of the spell
+     */
     public int getDistance() {
         return distance;
+    }
+
+    /**
+     * @return the movement speed in blocks per tick
+     */
+    public float getSpeed() {
+        return speed;
+    }
+
+    /**
+     * @return the inaccuracy of the spell launch angle
+     */
+    public float getDivergence() {
+        return divergence;
     }
 
     /**
@@ -50,8 +84,11 @@ public class Spell {
         spawnTrailParticle(entity);
     }
 
-    public boolean noClip(boolean noclip) {
-        return this.noclip = noclip;
+    /**
+     * @return true if the entity has noclip
+     */
+    public boolean isNoClip() {
+        return this.noclip;
     }
 
     /**
@@ -76,9 +113,9 @@ public class Spell {
 
     /**
      * Called while the player is casting the spell
-     * @param position the casting position
+     * @param entity the target entity
      */
-    public void spawnCastingParticles(Vec3d position) {
+    public void spawnCastingParticles(PersistentProjectileEntity entity) {
         // nothing
     }
 
@@ -108,19 +145,20 @@ public class Spell {
 
     /**
      * Called when summoning the tracker entity
+     * @return the tracker entity
      */
     public PersistentProjectileEntity spawnTrackerEntity() {
         ArrowEntity entity = (ArrowEntity) EntityType.ARROW.spawnFromItemStack(player.getWorld(), ItemStack.EMPTY, player, player.getBlockPos().up(), SpawnReason.NATURAL, true, false);
         assert entity != null;
         ((TargetEntityAccessor)entity).setSpell(Tome.spell);
         //entity.setInvisible(true);
-        entity.setNoClip(noclip);
+        entity.setNoClip(isNoClip());
         entity.setOwner(player);
         entity.setCustomName(Text.literal("Target"));
         entity.setPosition(player.getX(), player.getEyeY() - 0.25, player.getZ());
         ((TargetEntityAccessor)entity).setStartPos(entity.getPos());
         entity.setNoGravity(true);
-        entity.setVelocity(player, player.getPitch(), player.getYaw(), 0.0f, 0.5f, 1.0f);
+        entity.setVelocity(player, player.getPitch(), player.getYaw(), 0.0f, getSpeed(), getDivergence());
         return entity;
     }
 }

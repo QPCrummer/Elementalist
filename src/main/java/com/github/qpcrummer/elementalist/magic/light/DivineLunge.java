@@ -7,34 +7,18 @@ import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
 public class DivineLunge extends Spell {
     public DivineLunge(ServerPlayerEntity player, World world) {
-        super(player, world);
+        super(player, world, "Divine Lunge", 200, 10);
     }
 
     @Override
-    public int getCooldown() {
-        return 200;
-    }
-
-    @Override
-    public String getName() {
-        return "Divine Lunge";
-    }
-
-    @Override
-    public int getDistance() {
-        return 10;
-    }
-
-    @Override
-    public void spawnCastingParticles(Vec3d position) {
-        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.INSTANT_EFFECT, position, 20, 0.25D);
-        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.END_ROD, position, 10, 0.18D);
+    public void spawnCastingParticles(PersistentProjectileEntity entity) {
+        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.INSTANT_EFFECT, entity.getPos(), 20, 0.25D);
+        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.END_ROD, entity.getPos(), 10, 0.18D);
     }
 
     @Override

@@ -6,21 +6,6 @@ import net.minecraft.world.World;
 
 public class DimensionSplittingSlash extends Spell {
     public DimensionSplittingSlash(ServerPlayerEntity player, World world) {
-        super(player, world);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 400;
-    }
-
-    @Override
-    public String getName() {
-        return "Dimension Splitting Slash";
-    }
-
-    @Override
-    public int getDistance() {
-        return 1;
+        super(player, world, "Dimension Splitting Slash", 400, 1);
     }
 }

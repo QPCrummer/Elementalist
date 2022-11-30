@@ -6,21 +6,6 @@ import net.minecraft.world.World;
 
 public class SoulSteal extends Spell {
     public SoulSteal(ServerPlayerEntity player, World world) {
-        super(player, world);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 200;
-    }
-
-    @Override
-    public String getName() {
-        return "Soul Steal";
-    }
-
-    @Override
-    public int getDistance() {
-        return 100;
+        super(player, world, "Soul Steal", 200, 100);
     }
 }

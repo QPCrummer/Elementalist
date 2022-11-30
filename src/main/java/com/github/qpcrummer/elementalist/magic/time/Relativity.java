@@ -6,24 +6,10 @@ import net.minecraft.world.World;
 
 public class Relativity extends Spell {
     public Relativity(ServerPlayerEntity player, World world) {
-        super(player, world);
+        super(player, world, "Relativity", 6000, 0);
     }
 
     //This extremely powerful move that removes gravity... yeah. However, if it removes gravity, that means no oxygen so... (: - 1 health per second unless the player has respiration. In that case,
     //only do - (1 - 0.2 * respiration level). This move lasts 30 seconds, but has a massive cooldown of 5 minutes. The user of this spell does not take damage.
 
-    @Override
-    public int getCooldown() {
-        return 6000;
-    }
-
-    @Override
-    public String getName() {
-        return "Relativity";
-    }
-
-    @Override
-    public int getDistance() {
-        return 0;
-    }
 }
