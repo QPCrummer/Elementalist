@@ -6,21 +6,6 @@ import net.minecraft.world.World;
 
 public class FlameHurricane extends Spell {
     public FlameHurricane(ServerPlayerEntity player, World world) {
-        super(player, world);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 400;
-    }
-
-    @Override
-    public String getName() {
-        return "Flame Hurricane";
-    }
-
-    @Override
-    public int getDistance() {
-        return 0;
+        super(player, world, "Flame Hurricane", 400, 0);
     }
 }

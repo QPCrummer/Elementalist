@@ -6,21 +6,6 @@ import net.minecraft.world.World;
 
 public class VoidAegis extends Spell {
     public VoidAegis(ServerPlayerEntity player, World world) {
-        super(player, world);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 300;
-    }
-
-    @Override
-    public String getName() {
-        return "Void Aegis";
-    }
-
-    @Override
-    public int getDistance() {
-        return 0;
+        super(player, world, "Void Aegis", 300, 0);
     }
 }

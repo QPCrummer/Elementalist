@@ -6,21 +6,6 @@ import net.minecraft.world.World;
 
 public class EternalFlame extends Spell {
     public EternalFlame(ServerPlayerEntity player, World world) {
-        super(player, world);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 600;
-    }
-
-    @Override
-    public String getName() {
-        return "Eternal Flame";
-    }
-
-    @Override
-    public int getDistance() {
-        return 8;
+        super(player, world, "Eternal Flame", 600, 8);
     }
 }

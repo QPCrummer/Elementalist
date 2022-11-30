@@ -6,21 +6,6 @@ import net.minecraft.world.World;
 
 public class IfritsSphere extends Spell {
     public IfritsSphere(ServerPlayerEntity player, World world) {
-        super(player, world);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 200;
-    }
-
-    @Override
-    public String getName() {
-        return "Ifrits Sphere";
-    }
-
-    @Override
-    public int getDistance() {
-        return 8;
+        super(player, world, "Ifrits Sphere", 200, 8);
     }
 }

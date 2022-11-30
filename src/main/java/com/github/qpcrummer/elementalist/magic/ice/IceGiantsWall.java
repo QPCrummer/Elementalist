@@ -6,21 +6,6 @@ import net.minecraft.world.World;
 
 public class IceGiantsWall extends Spell {
     public IceGiantsWall(ServerPlayerEntity player, World world) {
-        super(player, world);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 300;
-    }
-
-    @Override
-    public String getName() {
-        return "Ice Giant's Wall";
-    }
-
-    @Override
-    public int getDistance() {
-        return 5;
+        super(player, world, "Ice Giant's Wall", 300, 5);
     }
 }

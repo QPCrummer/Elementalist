@@ -2,43 +2,32 @@ package com.github.qpcrummer.elementalist.magic.lightning;
 
 import com.github.qpcrummer.elementalist.magic.Spell;
 import com.github.qpcrummer.elementalist.util.ParticleUtils;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.particle.DustParticleEffect;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
 public class StormyWeb extends Spell {
 
     public StormyWeb(ServerPlayerEntity player, World world) {
-        super(player, world);
+        super(player, world, "Stormy Web", 400, 4);
     }
 
     @Override
-    public int getCooldown() {
-        return 400;
+    public void spawnCastingParticles(PersistentProjectileEntity entity) {
+        ParticleEffect dust = new DustParticleEffect(new Vec3f(0.0F, 0.976F, 0.961F), 1.0F);
+        ParticleUtils.fromCenter(player.getWorld(), dust, entity.getPos(), 10, 0.02D);
+        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.ELECTRIC_SPARK, entity.getPos(), 20, 0.12D);
     }
 
     @Override
-    public String getName() {
-        return "Stormy Web";
-    }
-
-    @Override
-    public int getDistance() {
-        return 4;
-    }
-
-    @Override
-    public void spawnCastingParticles() {
-        Vec3d center = new Vec3d(player.getX(), player.getBodyY(0.67D), player.getZ());
-        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.SOUL_FIRE_FLAME, center, 10, 0.02D);
-        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.ELECTRIC_SPARK, center, 20, 0.12D);
-    }
-
-    @Override
-    public void spawnTrailParticle(Vec3d position) {
-        ParticleUtils.insideDisc(player.getWorld(), ParticleTypes.SOUL_FIRE_FLAME, position, 4.0D, 10, 0);
-        ParticleUtils.insideDisc(player.getWorld(), ParticleTypes.ELECTRIC_SPARK, position, 4.0D, 25, 0);
+    public void spawnTrailParticle(PersistentProjectileEntity entity) {
+        ParticleEffect dust = new DustParticleEffect(new Vec3f(0.0F, 0.976F, 0.961F), 1.0F);
+        ParticleUtils.insideDisc(player.getWorld(), dust, entity.getPos(), 4.0D, 22, 0);
+        ParticleUtils.insideDisc(player.getWorld(), ParticleTypes.ELECTRIC_SPARK, entity.getPos(), 4.0D, 40, 0);
     }
 }
