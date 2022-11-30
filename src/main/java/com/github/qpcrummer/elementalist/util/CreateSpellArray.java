@@ -113,6 +113,10 @@ public class CreateSpellArray {
     }
     public static void levelUp(ServerPlayerEntity player, World world, String element) {
         int level = ((SpellAccessor)player).getLevel()+1;
+        if (level > 3) {
+            player.sendMessage(Text.literal("You cannot go above level 3!"));
+            return;
+        }
         ((SpellAccessor)player).setLevel(level);
         ((SpellAccessor)player).getSpells().add(elementSpells(element, player, world).get(level - 1));
         player.sendMessage(Text.literal("Congratulations, you are now a level "+level+ " " + element + " elementalist!"));

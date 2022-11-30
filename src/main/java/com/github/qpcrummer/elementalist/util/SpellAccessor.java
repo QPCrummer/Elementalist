@@ -12,6 +12,6 @@ public interface SpellAccessor {
     String getElement();
     void setElement(String element);
     void firstJoin();
-    void resetCooldowns(int spell);
+    void startCooldowns(int spell);
     int getCooldown(int spell);
 }

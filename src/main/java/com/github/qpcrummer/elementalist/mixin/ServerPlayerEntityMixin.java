@@ -143,7 +143,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Sp
         }
     }
     @Override
-    public void resetCooldowns(int spell) {
+    public void startCooldowns(int spell) {
         switch (spell) {
             case 0 -> cooldown1 = cooldown1d;
             case 1 -> cooldown2 = cooldown2d;
