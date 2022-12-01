@@ -16,20 +16,22 @@ public class GUI {
     public static SimpleGui gui;
 
     public static void launchGUI(ServerPlayerEntity player) {
-        gui = new SimpleGui(ScreenHandlerType.GENERIC_9X3, player, false) {
+        gui = new SimpleGui(ScreenHandlerType.GENERIC_9X2, player, true) {
             @Override
             public boolean onClick(int index, ClickType type, SlotActionType action, GuiElementInterface element) {
-                String elementAsString = element.getItemStack().getName().getString();
-                ((SpellAccessor) player).setElement(elementAsString);
-                levelUp(player, player.getEntityWorld(), elementAsString);
-                gui.close();
+                if (element != null) {
+                    String elementAsString = element.getItemStack().getName().getString();
+                    ((SpellAccessor) player).setElement(elementAsString);
+                    levelUp(player, player.getEntityWorld(), elementAsString);
+                    gui.close();
+                }
                 return super.onClick(index, type, action, element);
             }
         };
-        gui.setTitle(Text.literal("Choose Your Element"));
         for (int i = 0; i < CreateSpellArray.elements.size(); i++) {
             gui.setSlot(i, new GuiElementBuilder(CreateSpellArray.icons.get(i)).setCount(1).setName(Text.literal(CreateSpellArray.elements.get(i))));
         }
+        gui.setTitle(Text.literal("Choose Your Element"));
         gui.open();
     }
 }

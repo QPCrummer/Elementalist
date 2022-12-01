@@ -19,9 +19,14 @@ public class Spell {
     protected int cooldown;
     protected String name = "";
     protected int distance;
+    protected int entity_count = 1;
     protected float speed = 0.65F;
     protected float divergence = 1.0F;
+    protected float pitch_offset = 0.0F;
+    protected float yaw_offset = 0.0F;
     protected boolean noclip = false;
+    protected boolean custom_entity_summoning = false;
+    protected boolean accumulating_offsets = false;
 
     public Spell(ServerPlayerEntity player, World world) {
         this.player = player;
@@ -36,10 +41,22 @@ public class Spell {
     }
 
     /**
-     * @param entity the spell target entity
+     * If custom_entity_summoning = true, override this method to alter your summoning
      */
-    public void castProjectile(PersistentProjectileEntity entity) {
-        spawnCastingParticles(entity);
+    public void castProjectile() {
+        PersistentProjectileEntity entity;
+        if (!custom_entity_summoning) {
+            float offset_yaw = yaw_offset;
+            float offset_pitch = pitch_offset;
+            for (int i = 0; i < entity_count; i++) {
+               entity = spawnTrackerEntity(pitch_offset, yaw_offset);
+               spawnCastingParticles(entity);
+               if (accumulating_offsets) {
+                   offset_yaw = offset_yaw * 2;
+                   offset_pitch = offset_pitch * 2;
+               }
+            }
+        }
     }
 
     /**
@@ -145,9 +162,11 @@ public class Spell {
 
     /**
      * Called when summoning the tracker entity
+     * @param pitch_offset sets the offset for pitch; Use 0 for none
+     * @param yaw_offset sets the offset for the yam; Use 0 for none
      * @return the tracker entity
      */
-    public PersistentProjectileEntity spawnTrackerEntity() {
+    public PersistentProjectileEntity spawnTrackerEntity(float pitch_offset, float yaw_offset) {
         ArrowEntity entity = (ArrowEntity) EntityType.ARROW.spawnFromItemStack(player.getWorld(), ItemStack.EMPTY, player, player.getBlockPos().up(), SpawnReason.NATURAL, true, false);
         assert entity != null;
         ((TargetEntityAccessor)entity).setSpell(Tome.spell);
@@ -158,7 +177,7 @@ public class Spell {
         entity.setPosition(player.getX(), player.getEyeY() - 0.25, player.getZ());
         ((TargetEntityAccessor)entity).setStartPos(entity.getPos());
         entity.setNoGravity(true);
-        entity.setVelocity(player, player.getPitch(), player.getYaw(), 0.0f, getSpeed(), getDivergence());
+        entity.setVelocity(player, player.getPitch() + pitch_offset, player.getYaw() + yaw_offset, 0.0f, getSpeed(), getDivergence());
         return entity;
     }
 }

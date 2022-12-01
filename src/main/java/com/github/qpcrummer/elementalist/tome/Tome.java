@@ -5,7 +5,6 @@ import com.github.qpcrummer.elementalist.util.ModelledPolymerItem;
 import com.github.qpcrummer.elementalist.util.SpellAccessor;
 import eu.pb4.polymer.api.resourcepack.PolymerModelData;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.*;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -14,6 +13,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
+
+import static com.github.qpcrummer.elementalist.util.GUI.launchGUI;
 
 public class Tome extends ModelledPolymerItem {
     public static Spell spell;
@@ -25,16 +26,20 @@ public class Tome extends ModelledPolymerItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (user.isSneaking()) {
-            cycleSpell(user);
-        } else {
-            if (spell == null) {
-                spell = ((SpellAccessor)user).getSpells().get(currentSpell);
+        if (((SpellAccessor)user).getLevel() != 0) {
+            if (user.isSneaking()) {
+                cycleSpell(user);
+            } else {
+                if (spell == null) {
+                    spell = ((SpellAccessor) user).getSpells().get(currentSpell);
+                }
+                if (canCast((ServerPlayerEntity) user)) {
+                    spell.castProjectile();
+                    ((SpellAccessor) user).startCooldowns(currentSpell);
+                }
             }
-            PersistentProjectileEntity entity = spell.spawnTrackerEntity();
-            spell.castProjectile(entity);
-            ((SpellAccessor)user).startCooldowns(currentSpell);
-            user.getItemCooldownManager().set(this, spell.getCooldown());
+        } else {
+            launchGUI((ServerPlayerEntity) user);
         }
         return super.use(world, user, hand);
     }
@@ -55,5 +60,9 @@ public class Tome extends ModelledPolymerItem {
             OverlayMessageS2CPacket title = new OverlayMessageS2CPacket(Text.literal(spell.getName()));
             ((ServerPlayerEntity)user).networkHandler.sendPacket(clear);
             ((ServerPlayerEntity)user).networkHandler.sendPacket(title);
+    }
+
+    public boolean canCast(ServerPlayerEntity player) {
+        return ((SpellAccessor)player).getCooldown(currentSpell) == 0;
     }
 }

@@ -69,11 +69,6 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Sp
     }
 
     @Override
-    public void firstJoin() {
-        ((ServerPlayerEntity)(Object)this).sendMessage(Text.literal("Welcome to your elemental journey. To start, type /element"));
-    }
-
-    @Override
     public int getCooldown(int spell) {
         return switch (spell) {
             case 0 -> cooldown1;
@@ -85,10 +80,6 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Sp
 
     @Inject(method = "readCustomDataFromNbt", at = @At("HEAD"))
     public void readCustomData(NbtCompound nbt, CallbackInfo ci) {
-        System.out.println(nbt.get("elemental_level"));
-        System.out.println(nbt.get("element"));
-        System.out.println(nbt.contains("elemental_level"));
-        System.out.println(nbt.contains("element"));
         if (nbt.getInt("elemental_level") != 0 && !Objects.equals(nbt.getString("element"), "")) {
             level = nbt.getInt("elemental_level");
             element = nbt.getString("element");
@@ -98,8 +89,6 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Sp
 
     @Inject(method = "writeCustomDataToNbt", at = @At("HEAD"))
     public void writeCustomData(NbtCompound nbt, CallbackInfo ci) {
-        System.out.println(level);
-        System.out.println(element);
         nbt.putInt("elemental_level", level);
         nbt.putString("element", element);
     }
@@ -125,7 +114,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Sp
                     this.sendMessage(Text.literal(spell.getName() + " | " + cooldown3), true);
                 }
             }
-            if (this.isHolding(Items.tome) && cooldown1 + cooldown2 + cooldown3 == 0) {
+            if (this.isHolding(Items.tome) && getCooldown(currentSpell) == 0) {
                 this.sendMessage(Text.literal(spell.getName()), true);
             }
         }
