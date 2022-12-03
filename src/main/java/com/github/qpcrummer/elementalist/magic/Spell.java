@@ -63,7 +63,7 @@ public class Spell {
      * @return the cooldown after using the spell
      */
     public int getCooldown() {
-        return cooldown;
+        return cooldown / 50; // TODO remove before pushing commit
     }
 
     /**
