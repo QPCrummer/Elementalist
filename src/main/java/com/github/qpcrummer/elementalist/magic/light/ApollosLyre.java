@@ -18,9 +18,9 @@ public class ApollosLyre extends Spell {
     }
 
     @Override
-    public void spawnCastingParticles(PersistentProjectileEntity entity) {
-        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.ELECTRIC_SPARK, entity.getPos(), 20, 0.15D);
-        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.INSTANT_EFFECT, entity.getPos(), 16, 0.1D);
+    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
+        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.ELECTRIC_SPARK, targetEntity.getPos(), 20, 0.15D);
+        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.INSTANT_EFFECT, targetEntity.getPos(), 16, 0.1D);
     }
 
     @Override

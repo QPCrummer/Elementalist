@@ -16,9 +16,9 @@ public class DivineLunge extends Spell {
     }
 
     @Override
-    public void spawnCastingParticles(PersistentProjectileEntity entity) {
-        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.INSTANT_EFFECT, entity.getPos(), 20, 0.25D);
-        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.END_ROD, entity.getPos(), 10, 0.18D);
+    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
+        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.INSTANT_EFFECT, targetEntity.getPos(), 20, 0.25D);
+        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.END_ROD, targetEntity.getPos(), 10, 0.18D);
     }
 
     @Override

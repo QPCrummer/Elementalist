@@ -20,7 +20,7 @@ public class BloodRain extends Spell {
     }
 
     @Override
-    public void spawnCastingParticles(PersistentProjectileEntity entity) {
+    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
         ParticleEffect chunky = new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.NETHER_WART_BLOCK.getDefaultState());
         ParticleEffect thin = new DustParticleEffect(new Vec3f(0.709F, 0.0F, 0.0F), 1.0F);
         ParticleUtils.insideColumn(player.getWorld(), chunky, player.getPos(), 0.5D, 6.0D, 40, 0.30D);

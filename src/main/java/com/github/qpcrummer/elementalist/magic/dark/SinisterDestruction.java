@@ -21,15 +21,15 @@ public class SinisterDestruction extends Spell {
     }
 
     @Override
-    public void spawnCastingParticles(PersistentProjectileEntity entity) {
+    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
         final ParticleEffect dust = new DustParticleEffect(new Vec3f(0.235F, 0.0F, 0.309F), 1.0F);
         ParticleUtils.aroundEntity(player.getWorld(), dust, player, 20, 0.04D);
-        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.SOUL_FIRE_FLAME, entity.getPos(), 15, 0.12D);
+        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.SOUL_FIRE_FLAME, targetEntity.getPos(), 15, 0.12D);
     }
 
     @Override
     public void spawnTrailParticle(PersistentProjectileEntity targetEntity) {
-        final ParticleEffect dust = new DustParticleEffect(new Vec3f(0.235F, 0.0F, 0.309F), 1.0F);
+        final ParticleEffect dust = new DustParticleEffect(new Vec3f(0.235F, 0.0F, 0.309F), 2.0F);
         if(targetEntity.age % 5 == 0) {
             ParticleUtils.insideCube(player.getWorld(), ParticleTypes.FLASH, targetEntity.getPos(), 0.25D, 1, 0);
         }

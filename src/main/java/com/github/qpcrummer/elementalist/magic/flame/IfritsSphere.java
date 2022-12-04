@@ -16,9 +16,9 @@ public class IfritsSphere extends Spell {
     }
 
     @Override
-    public void spawnCastingParticles(PersistentProjectileEntity entity) {
+    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
         ParticleUtils.aroundEntity(player.getWorld(), ParticleTypes.LAVA, player, 20, 0.14D);
-        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.SMALL_FLAME, entity.getPos(), 10, 0.20D);
+        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.SMALL_FLAME, targetEntity.getPos(), 10, 0.20D);
     }
 
     @Override

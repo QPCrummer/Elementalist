@@ -3,6 +3,7 @@ package com.github.qpcrummer.elementalist.util;
 import net.minecraft.entity.Entity;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
@@ -231,7 +232,21 @@ public final class ParticleUtils {
      */
     public static void aroundEntity(final ServerWorld world, final ParticleEffect particle, final Entity entity,
                                       final int count, final double motion) {
-        double halfHeight = entity.getHeight() * 0.5D;
-        world.spawnParticles(particle, entity.getX(), entity.getY() + halfHeight, entity.getZ(), count, entity.getWidth(), halfHeight, entity.getWidth(), motion);
+        insideBounds(world, particle, entity.getBoundingBox(), count, motion);
     }
+
+    /**
+     * Spawns particles within an entity bounding box
+     * @param world the world
+     * @param particle the particle
+     * @param bounds the bounds
+     * @param count the number of particles
+     * @param motion the maximum particle motion
+     */
+    public static void insideBounds(final ServerWorld world, final ParticleEffect particle, final Box bounds,
+                                    final int count, final double motion) {
+        final Vec3d center = bounds.getCenter();
+        world.spawnParticles(particle,center.getX(), center.getY(), center.getZ(), count, bounds.getXLength() / 2.0D, bounds.getYLength() / 2.0D, bounds.getZLength() / 2.0D, motion);
+    }
+
 }
