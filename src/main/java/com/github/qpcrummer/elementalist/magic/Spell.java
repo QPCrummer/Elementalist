@@ -49,11 +49,11 @@ public class Spell {
             float offset_yaw = yaw_offset;
             float offset_pitch = pitch_offset;
             for (int i = 0; i < entity_count; i++) {
-               entity = spawnTrackerEntity(pitch_offset, yaw_offset);
+               entity = spawnTrackerEntity(offset_yaw, offset_pitch);
                onCastSpell(entity);
                if (accumulating_offsets) {
-                   offset_yaw = offset_yaw * 2;
-                   offset_pitch = offset_pitch * 2;
+                   offset_yaw += yaw_offset;
+                   offset_pitch += pitch_offset;
                }
             }
         }

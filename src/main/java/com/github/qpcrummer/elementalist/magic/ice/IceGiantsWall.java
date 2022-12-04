@@ -38,15 +38,15 @@ public class IceGiantsWall extends Spell {
 
     @Override
     public void spawnTrailParticle(PersistentProjectileEntity targetEntity) {
-        ParticleUtils.insideCube(player.getWorld(), ParticleTypes.SNOWFLAKE, targetEntity.getPos(), 2.5D, 10, 0.06D);
+        ParticleUtils.insideCube(player.getWorld(), ParticleTypes.SNOWFLAKE, targetEntity.getPos().add(0, 2.0D, 0), 1.25D, 10, 0.06D);
         // wall particles
         final ParticleEffect largeDust = new DustParticleEffect(new Vec3f(0.809F, 1.0F, 1.0F), 6.0F);
         Vec3d pos;
-        for(int i = 0; i < 45; i++) {
+        for(int i = 0; i < 35; i++) {
             pos = targetEntity.getPos().add(
-                    ((player.getRandom().nextDouble() - 0.5D) * 2.0D) * 5.0D,
+                    ((player.getRandom().nextDouble() - 0.5D)) * getDistance(),
                     (player.getRandom().nextDouble()) * 7.0D - 2.0D,
-                    ((player.getRandom().nextDouble() - 0.5D) * 2.0D) * 5.0D
+                    ((player.getRandom().nextDouble() - 0.5D)) * getDistance()
             );
             for(int j = 0, n = player.getWorld().getPlayers().size(); j < n; ++j) {
                 ServerPlayerEntity serverPlayerEntity = player.getWorld().getPlayers().get(j);

@@ -7,6 +7,7 @@ import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
@@ -17,6 +18,9 @@ import java.util.List;
 public class PlaguedSufferance extends Spell {
     public PlaguedSufferance(ServerPlayerEntity player, World world) {
         super(player, world, "Plagued Sufferance", 300, 10);
+        entity_count = 4;
+        accumulating_offsets = true;
+        pitch_offset = 90;
     }
 
     @Override
@@ -27,8 +31,11 @@ public class PlaguedSufferance extends Spell {
         ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.SQUID_INK, targetEntity.getPos(), 8, 0.12D);
         // calculate start and end
         Vec3d start = player.getPos().add(0, player.getHeight() * 0.5D, 0);
-        Vec3d end = ParticleUtils.project(start, player.getRotationVector(), getDistance());
-        Vec3d difference = end.subtract(start).multiply(1.0D, 0.0D, 1.0D);
+        Vec3d end = ParticleUtils.project(start, targetEntity.getRotationVector(), getDistance());
+        ParticleUtils.line(player.getWorld(), dust, start, end, 0.0625D, 0.01D);
+        ParticleUtils.line(player.getWorld(), ParticleTypes.SNEEZE, start, end, 0.15D, 0.01D);
+        ParticleUtils.line(player.getWorld(), ParticleTypes.INSTANT_EFFECT, start, end, 0.5D, 0);
+        /*Vec3d difference = end.subtract(start).multiply(1.0D, 0.0D, 1.0D);
         // create list of targets
         List<Vec3d> targets = new ArrayList<>();
         targets.add(start.add(difference.getX(), difference.getY(), difference.getZ()));
@@ -40,6 +47,6 @@ public class PlaguedSufferance extends Spell {
             ParticleUtils.line(player.getWorld(), dust, start, vec, 0.0625D, 0.01D);
             ParticleUtils.line(player.getWorld(), ParticleTypes.SNEEZE, start, vec, 0.15D, 0.01D);
             ParticleUtils.line(player.getWorld(), ParticleTypes.INSTANT_EFFECT, start, vec, 0.5D, 0);
-        }
+        }*/
     }
 }
