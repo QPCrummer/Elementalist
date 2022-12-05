@@ -22,9 +22,9 @@ public class DivineRetribution extends Spell {
     }
 
     @Override
-    public void spawnCastingParticles(PersistentProjectileEntity entity) {
-        ParticleUtils.insideSphere(player.getWorld(), ParticleTypes.SOUL_FIRE_FLAME, entity.getPos(), 0.25D, 20, 0);
-        ParticleUtils.insideSphere(player.getWorld(), ParticleTypes.ELECTRIC_SPARK, entity.getPos(), 1.0D, 40, 0);
+    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
+        ParticleUtils.insideSphere(player.getWorld(), ParticleTypes.SOUL_FIRE_FLAME, targetEntity.getPos(), 0.25D, 20, 0);
+        ParticleUtils.insideSphere(player.getWorld(), ParticleTypes.ELECTRIC_SPARK, targetEntity.getPos(), 1.0D, 40, 0);
     }
 
     @Override

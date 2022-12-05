@@ -15,9 +15,9 @@ public class AirSlashBarrage extends Spell {
     }
 
     @Override
-    public void spawnCastingParticles(PersistentProjectileEntity entity) {
-        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.INSTANT_EFFECT, entity.getPos(), 15, 0.15D);
-        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.CLOUD, entity.getPos(), 10, 0.11D);
+    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
+        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.INSTANT_EFFECT, targetEntity.getPos(), 15, 0.15D);
+        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.CLOUD, targetEntity.getPos(), 10, 0.11D);
     }
 
     @Override

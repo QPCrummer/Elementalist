@@ -16,8 +16,8 @@ public class HolySwordBarrage extends Spell {
     }
 
     @Override
-    public void spawnCastingParticles(PersistentProjectileEntity entity) {
-        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.INSTANT_EFFECT, entity.getPos(), 10, 0.18D);
+    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
+        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.INSTANT_EFFECT, targetEntity.getPos(), 10, 0.18D);
     }
 
     @Override

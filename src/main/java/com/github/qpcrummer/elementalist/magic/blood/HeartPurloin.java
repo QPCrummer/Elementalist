@@ -20,9 +20,9 @@ public class HeartPurloin extends Spell {
     }
 
     @Override
-    public void spawnCastingParticles(PersistentProjectileEntity entity) {
+    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
         ParticleEffect thin = new DustParticleEffect(new Vec3f(0.709F, 0.0F, 0.0F), 1.0F);
-        ParticleUtils.line(player.getWorld(), thin, entity.getPos(), ParticleUtils.project(entity.getPos(), entity.getVelocity(), getDistance()), 0.125D, 0.02D);
+        ParticleUtils.line(player.getWorld(), thin, targetEntity.getPos(), ParticleUtils.project(targetEntity.getPos(), targetEntity.getVelocity(), getDistance()), 0.125D, 0.02D);
     }
 
     @Override

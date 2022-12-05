@@ -49,11 +49,11 @@ public class Spell {
             float offset_yaw = yaw_offset;
             float offset_pitch = pitch_offset;
             for (int i = 0; i < entity_count; i++) {
-               entity = spawnTrackerEntity(pitch_offset, yaw_offset);
-               spawnCastingParticles(entity);
+               entity = spawnTrackerEntity(offset_yaw, offset_pitch);
+               onCastSpell(entity);
                if (accumulating_offsets) {
-                   offset_yaw = offset_yaw * 2;
-                   offset_pitch = offset_pitch * 2;
+                   offset_yaw += yaw_offset;
+                   offset_pitch += pitch_offset;
                }
             }
         }
@@ -129,10 +129,18 @@ public class Spell {
     }
 
     /**
-     * Called while the player is casting the spell
-     * @param entity the target entity
+     * Called when the spell is cast
+     * @param targetEntity the target entity
      */
-    public void spawnCastingParticles(PersistentProjectileEntity entity) {
+    public void onCastSpell(PersistentProjectileEntity targetEntity) {
+        spawnCastingParticles(targetEntity);
+    }
+
+    /**
+     * Called while the player is casting the spell
+     * @param targetEntity the target entity
+     */
+    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
         // nothing
     }
 

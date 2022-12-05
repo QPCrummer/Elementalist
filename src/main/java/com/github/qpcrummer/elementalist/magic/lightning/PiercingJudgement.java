@@ -19,10 +19,10 @@ public class PiercingJudgement extends Spell {
     }
 
     @Override
-    public void spawnCastingParticles(PersistentProjectileEntity entity) {
+    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
         ParticleEffect dust = new DustParticleEffect(new Vec3f(0.0F, 0.976F, 0.961F), 1.0F);
-        ParticleUtils.fromCenter(player.getWorld(), dust, entity.getPos(), 10, 0.02D);
-        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.ELECTRIC_SPARK, entity.getPos(), 20, 0.12D);
+        ParticleUtils.fromCenter(player.getWorld(), dust, targetEntity.getPos(), 10, 0.02D);
+        ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.ELECTRIC_SPARK, targetEntity.getPos(), 20, 0.12D);
     }
 
     @Override
