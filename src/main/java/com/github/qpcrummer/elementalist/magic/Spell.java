@@ -27,6 +27,8 @@ public class Spell {
     protected boolean noclip = false;
     protected boolean custom_entity_summoning = false;
     protected boolean accumulating_offsets = false;
+    //TODO implement dispose_target values for each spell and set this to false
+    protected boolean dispose_target = true;
 
     public Spell(ServerPlayerEntity player, World world) {
         this.player = player;
@@ -92,6 +94,21 @@ public class Spell {
      */
     public float getDivergence() {
         return divergence;
+    }
+
+    /**
+     * Gets the disposal of the Target Entity
+     * @return The status of the disposal
+     */
+    public boolean shouldDisposeTarget() {
+        return dispose_target;
+    }
+
+    /**
+     * Marks Target ready for disposal
+     */
+    public void disposeTarget() {
+        this.dispose_target = true;
     }
 
     /**
