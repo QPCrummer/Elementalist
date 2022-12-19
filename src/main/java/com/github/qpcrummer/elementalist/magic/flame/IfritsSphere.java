@@ -2,21 +2,19 @@ package com.github.qpcrummer.elementalist.magic.flame;
 
 import com.github.qpcrummer.elementalist.magic.Spell;
 import com.github.qpcrummer.elementalist.util.ParticleUtils;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.particle.DustParticleEffect;
-import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
 public class IfritsSphere extends Spell {
     public IfritsSphere(ServerPlayerEntity player, World world) {
-        super(player, world, "Ifrits Sphere", 200, 8);
+        super(player, world, "Ifrits Sphere", 200, 8, 0.65F, 0.0F, 0.0F);
     }
 
     @Override
-    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
+    public void spawnCastingParticles(Entity targetEntity) {
         ParticleUtils.aroundEntity(player.getWorld(), ParticleTypes.LAVA, player, 20, 0.14D);
         ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.SMALL_FLAME, targetEntity.getPos(), 10, 0.20D);
     }

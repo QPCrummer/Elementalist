@@ -2,6 +2,7 @@ package com.github.qpcrummer.elementalist.magic.wind;
 
 import com.github.qpcrummer.elementalist.magic.Spell;
 import com.github.qpcrummer.elementalist.util.ParticleUtils;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -12,11 +13,11 @@ import net.minecraft.world.World;
 
 public class SkyFall extends Spell {
     public SkyFall(ServerPlayerEntity player, World world) {
-        super(player, world, "Sky Fall", 600, 16);
+        super(player, world, "Sky Fall", 600, 16, 0.65F, 0.0F, 0.0F);
     }
 
     @Override
-    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
+    public void spawnCastingParticles(Entity targetEntity) {
         ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.INSTANT_EFFECT, targetEntity.getPos(), 15, 0.15D);
         ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.CLOUD, targetEntity.getPos(), 10, 0.11D);
     }

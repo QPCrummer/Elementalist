@@ -1,25 +1,25 @@
 package com.github.qpcrummer.elementalist.magic.ice;
 
-import com.github.qpcrummer.elementalist.magic.Spell;
+import com.github.qpcrummer.elementalist.magic.spell_types.StaticSpell;
 import com.github.qpcrummer.elementalist.util.ParticleUtils;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
-public class IceGiantsWall extends Spell {
+public class IceGiantsWall extends StaticSpell {
     public IceGiantsWall(ServerPlayerEntity player, World world) {
-        super(player, world, "Ice Giant's Wall", 300, 5);
+        super(player, world, "Ice Giant's Wall", 300);
     }
 
     @Override
-    public void onCastSpell(PersistentProjectileEntity targetEntity) {
+    public void onCastSpell(Entity targetEntity) {
         super.onCastSpell(targetEntity);
         Vec3d pos = ParticleUtils.project(player.getEyePos(), player.getRotationVector(), getDistance() * 0.5D);
         targetEntity.setPos(pos.getX(), pos.getY(), pos.getZ());
@@ -29,7 +29,7 @@ public class IceGiantsWall extends Spell {
     }
 
     @Override
-    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
+    public void spawnCastingParticles(Entity targetEntity) {
         final ParticleEffect dust = new DustParticleEffect(new Vec3f(0.709F, 1.0F, 1.0F), 1.0F);
         ParticleUtils.aroundEntity(player.getWorld(), ParticleTypes.SNOWFLAKE, targetEntity, 20, 0.15D);
         ParticleUtils.fromCenter(player.getWorld(), dust, targetEntity.getPos(), 20, 0.15D);
@@ -59,5 +59,10 @@ public class IceGiantsWall extends Spell {
                 player.getWorld().sendToPlayerIfNearby(serverPlayerEntity, true, pos.getX(), pos.getY(), pos.getZ(), packet);
             }
         }
+    }
+
+    @Override
+    public void immediateActivationTask() {
+        super.immediateActivationTask();
     }
 }

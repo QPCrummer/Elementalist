@@ -1,7 +1,9 @@
 package com.github.qpcrummer.elementalist.magic.poison;
 
 import com.github.qpcrummer.elementalist.magic.Spell;
+import com.github.qpcrummer.elementalist.magic.spell_types.MultishotSpell;
 import com.github.qpcrummer.elementalist.util.ParticleUtils;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
@@ -15,16 +17,16 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaguedSufferance extends Spell {
+public class PlaguedSufferance extends MultishotSpell {
     public PlaguedSufferance(ServerPlayerEntity player, World world) {
-        super(player, world, "Plagued Sufferance", 300, 10);
+        super(player, world, "Plagued Sufferance", 300, 10, 0.65F, 0.0F, 0.0F, 4);
         entity_count = 4;
         accumulating_offsets = true;
         pitch_offset = 90;
     }
 
     @Override
-    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
+    public void spawnCastingParticles(Entity targetEntity) {
         //final ParticleEffect dust = new DustParticleEffect(new Vec3f(0, 0.35F, 0), 1.0F);
         final ParticleEffect dust = new DustParticleEffect(new Vec3f(0, 0.35F, 0), 2.0F);
         ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.SNEEZE, targetEntity.getPos(), 10, 0.1D);

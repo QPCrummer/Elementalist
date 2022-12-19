@@ -1,8 +1,9 @@
 package com.github.qpcrummer.elementalist.magic.dark;
 
-import com.github.qpcrummer.elementalist.magic.Spell;
+import com.github.qpcrummer.elementalist.magic.spell_types.DelayedRangedSpell;
 import com.github.qpcrummer.elementalist.util.ParticleUtils;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.DustParticleEffect;
@@ -15,13 +16,13 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
-public class SinisterDestruction extends Spell {
+public class SinisterDestruction extends DelayedRangedSpell {
     public SinisterDestruction(ServerPlayerEntity player, World world) {
-        super(player, world, "Sinister Destruction", 800, 8);
+        super(player, world, "Sinister Destruction", 800, 8, 0.65F, 120, 0.0F, 0.0F);
     }
 
     @Override
-    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
+    public void spawnCastingParticles(Entity targetEntity) {
         final ParticleEffect dust = new DustParticleEffect(new Vec3f(0.235F, 0.0F, 0.309F), 1.0F);
         ParticleUtils.aroundEntity(player.getWorld(), dust, player, 20, 0.04D);
         ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.SOUL_FIRE_FLAME, targetEntity.getPos(), 15, 0.12D);
@@ -44,6 +45,11 @@ public class SinisterDestruction extends Spell {
     @Override
     public void spawnEntityImpactParticle(EntityHitResult result) {
         spawnImpactParticle(result);
+    }
+
+    @Override
+    public void waitingTasks() {
+       //Grow larger
     }
 
     private void spawnImpactParticle(HitResult result) {

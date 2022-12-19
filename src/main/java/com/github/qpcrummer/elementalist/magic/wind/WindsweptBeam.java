@@ -1,7 +1,8 @@
 package com.github.qpcrummer.elementalist.magic.wind;
 
-import com.github.qpcrummer.elementalist.magic.Spell;
+import com.github.qpcrummer.elementalist.magic.spell_types.StaticSpell;
 import com.github.qpcrummer.elementalist.util.ParticleUtils;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -9,13 +10,13 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class WindsweptBeam extends Spell {
+public class WindsweptBeam extends StaticSpell {
     public WindsweptBeam(ServerPlayerEntity player, World world) {
-        super(player, world, "Windswept Beam", 300, 8);
+        super(player, world, "Windswept Beam", 300);
     }
 
     @Override
-    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
+    public void spawnCastingParticles(Entity targetEntity) {
         ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.INSTANT_EFFECT, targetEntity.getPos(), 15, 0.15D);
         ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.CLOUD, targetEntity.getPos(), 10, 0.11D);
     }
@@ -35,5 +36,10 @@ public class WindsweptBeam extends Spell {
     public void spawnEntityImpactParticle(EntityHitResult result) {
         ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.INSTANT_EFFECT, result.getPos(), 40, 0.18D);
         ParticleUtils.aroundEntity(player.getWorld(), ParticleTypes.CLOUD, result.getEntity(), 20, 0.02D);
+    }
+
+    @Override
+    public void immediateActivationTask() {
+        super.immediateActivationTask();
     }
 }

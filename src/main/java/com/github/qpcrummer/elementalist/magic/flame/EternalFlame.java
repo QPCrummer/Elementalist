@@ -2,6 +2,7 @@ package com.github.qpcrummer.elementalist.magic.flame;
 
 import com.github.qpcrummer.elementalist.magic.Spell;
 import com.github.qpcrummer.elementalist.util.ParticleUtils;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -10,11 +11,11 @@ import net.minecraft.world.World;
 
 public class EternalFlame extends Spell {
     public EternalFlame(ServerPlayerEntity player, World world) {
-        super(player, world, "Eternal Flame", 600, 8);
+        super(player, world, "Eternal Flame", 600, 8, 0.65F, 0.0F, 0.0F);
     }
 
     @Override
-    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
+    public void spawnCastingParticles(Entity targetEntity) {
         ParticleUtils.aroundEntity(player.getWorld(), ParticleTypes.LAVA, player, 20, 0.14D);
         ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.SMALL_FLAME, targetEntity.getPos(), 10, 0.20D);
     }

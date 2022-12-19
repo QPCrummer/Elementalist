@@ -23,7 +23,6 @@ public class Tome extends ModelledPolymerItem {
         super(settings, customModelData);
     }
 
-
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (((SpellAccessor)user).getLevel() != 0) {
@@ -34,7 +33,7 @@ public class Tome extends ModelledPolymerItem {
                     spell = ((SpellAccessor) user).getSpells().get(currentSpell);
                 }
                 if (canCast((ServerPlayerEntity) user)) {
-                    spell.castProjectile();
+                    spell.cast();
                     ((SpellAccessor) user).startCooldowns(currentSpell);
                 }
             }

@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 public class BloodTransplant extends Spell {
     public BloodTransplant(ServerPlayerEntity player, World world) {
-        super(player, world, "Blood Transplant", 200, 10);
+        super(player, world, "Blood Transplant", 200, 10, 0.65F, 0.0F,0.0F);
     }
 
     @Override

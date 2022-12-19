@@ -2,6 +2,7 @@ package com.github.qpcrummer.elementalist.magic;
 
 import com.github.qpcrummer.elementalist.tome.Tome;
 import com.github.qpcrummer.elementalist.util.TargetEntityAccessor;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.projectile.ArrowEntity;
@@ -18,45 +19,52 @@ public class Spell {
     protected final World world;
     protected int cooldown;
     protected String name = "";
-    protected int distance;
     protected int entity_count = 1;
+    protected int distance;
     protected float speed = 0.65F;
     protected float divergence = 1.0F;
     protected float pitch_offset = 0.0F;
     protected float yaw_offset = 0.0F;
     protected boolean noclip = false;
-    protected boolean custom_entity_summoning = false;
     protected boolean accumulating_offsets = false;
     //TODO implement dispose_target values for each spell and set this to false
     protected boolean dispose_target = true;
 
-    public Spell(ServerPlayerEntity player, World world) {
+    public Spell(ServerPlayerEntity player, World world, String name, int cooldown) {
         this.player = player;
         this.world = world;
-    }
-
-    public Spell(ServerPlayerEntity player, World world, String name, int cooldown, int distance) {
-        this(player, world);
         this.name = name;
         this.cooldown = cooldown;
+    }
+
+    public Spell(ServerPlayerEntity player, World world, String name, int cooldown, int distance, float speed, float pitch_offset, float yaw_offset) {
+        this(player, world, name, cooldown);
         this.distance = distance;
+        this.speed = speed;
+        this.pitch_offset = pitch_offset;
+        this.yaw_offset = yaw_offset;
     }
 
     /**
-     * If custom_entity_summoning = true, override this method to alter your summoning
+     * Main method for casting spells
+     */
+    public void cast() {
+        castProjectile();
+    }
+
+    /**
+     * Summons the Target Projectile
      */
     public void castProjectile() {
         PersistentProjectileEntity entity;
-        if (!custom_entity_summoning) {
-            float offset_yaw = yaw_offset;
-            float offset_pitch = pitch_offset;
-            for (int i = 0; i < entity_count; i++) {
-               entity = spawnTrackerEntity(offset_yaw, offset_pitch);
-               onCastSpell(entity);
-               if (accumulating_offsets) {
-                   offset_yaw += yaw_offset;
-                   offset_pitch += pitch_offset;
-               }
+        float offset_yaw = yaw_offset;
+        float offset_pitch = pitch_offset;
+        for (int i = 0; i < entity_count; i++) {
+            entity = spawnTrackerEntity(offset_yaw, offset_pitch);
+            onCastSpell(entity);
+            if (accumulating_offsets) {
+                offset_yaw += yaw_offset;
+                offset_pitch += pitch_offset;
             }
         }
     }
@@ -76,17 +84,17 @@ public class Spell {
     }
 
     /**
-     * @return the maximum travel distance of the spell
-     */
-    public int getDistance() {
-        return distance;
-    }
-
-    /**
      * @return the movement speed in blocks per tick
      */
     public float getSpeed() {
         return speed;
+    }
+
+    /**
+     * @return the maximum travel distance of the spell
+     */
+    public int getDistance() {
+        return distance;
     }
 
     /**
@@ -147,9 +155,9 @@ public class Spell {
 
     /**
      * Called when the spell is cast
-     * @param targetEntity the target entity
+     * @param targetEntity the target entity unless immediate activation, then it is the user
      */
-    public void onCastSpell(PersistentProjectileEntity targetEntity) {
+    public void onCastSpell(Entity targetEntity) {
         spawnCastingParticles(targetEntity);
     }
 
@@ -157,7 +165,7 @@ public class Spell {
      * Called while the player is casting the spell
      * @param targetEntity the target entity
      */
-    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
+    public void spawnCastingParticles(Entity targetEntity) {
         // nothing
     }
 
@@ -202,7 +210,17 @@ public class Spell {
         entity.setPosition(player.getX(), player.getEyeY() - 0.25, player.getZ());
         ((TargetEntityAccessor)entity).setStartPos(entity.getPos());
         entity.setNoGravity(true);
-        entity.setVelocity(player, player.getPitch() + pitch_offset, player.getYaw() + yaw_offset, 0.0f, getSpeed(), getDivergence());
+        applyVelocity(entity, pitch_offset, yaw_offset);
         return entity;
+    }
+
+    /**
+     * Sets the velocity for the arrow
+     * @param entity The arrow
+     * @param pitch_offset sets the offset for pitch; Use 0 for none
+     * @param yaw_offset sets the offset for the yam; Use 0 for none
+     */
+    public void applyVelocity(ArrowEntity entity, float pitch_offset, float yaw_offset) {
+        entity.setVelocity(player, player.getPitch() + pitch_offset, player.getYaw() + yaw_offset, 0.0f, getSpeed(), getDivergence());
     }
 }

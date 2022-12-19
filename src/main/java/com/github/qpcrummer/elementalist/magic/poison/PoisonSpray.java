@@ -1,7 +1,9 @@
 package com.github.qpcrummer.elementalist.magic.poison;
 
 import com.github.qpcrummer.elementalist.magic.Spell;
+import com.github.qpcrummer.elementalist.magic.spell_types.StaticSpell;
 import com.github.qpcrummer.elementalist.util.ParticleUtils;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
@@ -11,13 +13,13 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
-public class PoisonSpray extends Spell {
+public class PoisonSpray extends StaticSpell {
     public PoisonSpray(ServerPlayerEntity player, World world) {
-        super(player, world, "Poison Spray", 300, 7);
+        super(player, world, "Poison Spray", 300);
     }
 
     @Override
-    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
+    public void spawnCastingParticles(Entity targetEntity) {
         ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.SNEEZE, targetEntity.getPos(), 10, 0.1D);
         ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.INSTANT_EFFECT, targetEntity.getPos(), 8, 0.08D);
     }
@@ -38,5 +40,10 @@ public class PoisonSpray extends Spell {
             player.getWorld().spawnParticles(ParticleTypes.SNEEZE, pos.getX(), pos.getY(), pos.getZ(), 0, motion.getX(), motion.getY(), motion.getZ(), 0.4F);
         }
         ParticleUtils.insideCube(player.getWorld(), ParticleTypes.INSTANT_EFFECT, targetEntity.getPos(), 2.5D, 20, 0.02D);
+    }
+
+    @Override
+    public void immediateActivationTask() {
+        super.immediateActivationTask();
     }
 }

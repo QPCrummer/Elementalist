@@ -1,12 +1,12 @@
 package com.github.qpcrummer.elementalist.magic.time;
 
-import com.github.qpcrummer.elementalist.magic.Spell;
+import com.github.qpcrummer.elementalist.magic.spell_types.StaticSpell;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 
-public class TimeWarp extends Spell {
+public class TimeWarp extends StaticSpell {
     public TimeWarp(ServerPlayerEntity player, World world) {
-        super(player, world, "Time Warp", 600, 10);
+        super(player, world, "Time Warp", 600);
         noclip = true;
     }
 

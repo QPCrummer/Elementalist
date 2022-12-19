@@ -1,7 +1,8 @@
 package com.github.qpcrummer.elementalist.magic.wind;
 
-import com.github.qpcrummer.elementalist.magic.Spell;
+import com.github.qpcrummer.elementalist.magic.spell_types.StaticSpell;
 import com.github.qpcrummer.elementalist.util.ParticleUtils;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -9,13 +10,13 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class AirSlashBarrage extends Spell {
+public class AirSlashBarrage extends StaticSpell {
     public AirSlashBarrage(ServerPlayerEntity player, World world) {
-        super(player, world, "Air Slash Barrage", 300, 2);
+        super(player, world, "Air Slash Barrage", 300);
     }
 
     @Override
-    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
+    public void spawnCastingParticles(Entity targetEntity) {
         ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.INSTANT_EFFECT, targetEntity.getPos(), 15, 0.15D);
         ParticleUtils.fromCenter(player.getWorld(), ParticleTypes.CLOUD, targetEntity.getPos(), 10, 0.11D);
     }
@@ -33,5 +34,10 @@ public class AirSlashBarrage extends Spell {
     @Override
     public void spawnEntityImpactParticle(EntityHitResult result) {
         ParticleUtils.aroundEntity(player.getWorld(), ParticleTypes.CLOUD, result.getEntity(), 18, 0.02D);
+    }
+
+    @Override
+    public void immediateActivationTask() {
+        super.immediateActivationTask();
     }
 }

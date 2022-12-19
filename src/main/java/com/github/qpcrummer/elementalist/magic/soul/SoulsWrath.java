@@ -1,7 +1,8 @@
 package com.github.qpcrummer.elementalist.magic.soul;
 
-import com.github.qpcrummer.elementalist.magic.Spell;
+import com.github.qpcrummer.elementalist.magic.spell_types.MovingSpell;
 import com.github.qpcrummer.elementalist.util.ParticleUtils;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -9,13 +10,13 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class SoulsWrath extends Spell {
+public class SoulsWrath extends MovingSpell {
     public SoulsWrath(ServerPlayerEntity player, World world) {
-        super(player, world, "Soul's Wrath", 600, 100);
+        super(player, world, "Soul's Wrath", 600, 100, 0.65F, 0.0F, 0.0F);
     }
 
     @Override
-    public void spawnCastingParticles(PersistentProjectileEntity targetEntity) {
+    public void spawnCastingParticles(Entity targetEntity) {
         ParticleUtils.insideColumn(player.getWorld(), ParticleTypes.SOUL_FIRE_FLAME, player.getPos(), 0.5D, 1.0D, 15, 0.15D);
     }
 
